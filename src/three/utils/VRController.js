@@ -11,19 +11,16 @@ export class VRController {
       this.renderer.xr.addEventListener('sessionend', this.onSessionEnd)
     }
 
-    const filmSubscription = useAppStore.subscribe(
-      (state) => state.filmPlaying,
-      (filmPlaying, previousFilmPlaying) => {
-        if (filmPlaying === previousFilmPlaying) {
-          return
-        }
-
-        if (filmPlaying && useAppStore.getState().isXRSupported) {
-          this.enterVR()
+    const vrSubscription = useAppStore.subscribe(
+      (state) => state.xrSession,
+      (xrSession) => {
+        if (xrSession && useAppStore.getState().isXRSupported) {
+          this.renderer.xr.setSession(xrSession)
+          this.onSessionStart()
         }
       }
     )
-    this.subscriptions.push(filmSubscription)
+    this.subscriptions.push(vrSubscription)
   }
 
   onSessionStart = () => {
@@ -34,13 +31,6 @@ export class VRController {
     useAppStore.getState().setFilmPaused(false)
     useAppStore.getState().setFilmPlaying(false)
     this.vrOffsetGroup.position.set(0, 0, 0)
-  }
-
-  enterVR = async () => {
-    const session = await navigator.xr.requestSession('immersive-vr', {
-      optionalFeatures: ['local-floor'],
-    })
-    this.renderer.xr.setSession(session)
   }
 
   destroy() {

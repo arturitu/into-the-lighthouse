@@ -16,44 +16,61 @@ const Header = ({ progress = 100 }) => {
   const setFilmPaused = useAppStore((state) => state.setFilmPaused)
   const filmPlaying = useAppStore((state) => state.filmPlaying)
   const clipDuration = useAppStore((state) => state.clipDuration)
+  const setXRSession = useAppStore((state) => state.setXRSession)
   const [ignoreHashChange, setIgnoreHashChange] = useState(false)
 
   const handleButtonClick = () => {
     buttonRef.current.disabled = true
-    const tl = gsap.timeline()
-    tl.to(buttonRef.current, {
-      y: -10,
-      opacity: 0,
-      duration: 0.6,
-      ease: 'power2.in',
-    })
-    tl.to(
-      headingRef.current,
-      { y: -50, opacity: 0, duration: 0.6, ease: 'power2.in' },
-      '-=0.2'
-    )
-    tl.to(
-      socialLinksRef.current,
-      { y: -30, opacity: 0, duration: 0.3, ease: 'power2.in' },
-      '-=0.25'
-    )
-    tl.to(
-      logoRef.current,
-      { y: -50, opacity: 0, duration: 0.4, ease: 'power3.in' },
-      '-=0.25'
-    )
-    tl.to(
-      headerRef.current,
-      { pointerEvents: 'none', opacity: 0, duration: 0.1 },
-      '-=0.2'
-    )
-    tl.add(() => {
-      setIgnoreHashChange(true)
-      window.history.replaceState(null, '', window.location.pathname)
-      window.history.pushState({ isFilm: true }, '', '#film')
-      setFilmPlaying(true)
-      setTimeout(() => setIgnoreHashChange(false), 100)
-    })
+    if (useAppStore.getState().isXRSupported) {
+      navigator.xr
+        ?.requestSession('immersive-vr', {
+          optionalFeatures: ['local-floor'],
+        })
+        .then((session) => {
+          setIgnoreHashChange(true)
+          window.history.replaceState(null, '', window.location.pathname)
+          window.history.pushState({ isFilm: true }, '', '#film')
+          setFilmPlaying(true)
+          setXRSession(session)
+          setTimeout(() => setIgnoreHashChange(false), 100)
+        })
+    } else {
+      const tl = gsap.timeline()
+      tl.to(buttonRef.current, {
+        y: -10,
+        opacity: 0,
+        duration: 0.6,
+        ease: 'power2.in',
+      })
+      tl.to(
+        headingRef.current,
+        { y: -50, opacity: 0, duration: 0.6, ease: 'power2.in' },
+        '-=0.2'
+      )
+      tl.to(
+        socialLinksRef.current,
+        { y: -30, opacity: 0, duration: 0.3, ease: 'power2.in' },
+        '-=0.25'
+      )
+      tl.to(
+        logoRef.current,
+        { y: -50, opacity: 0, duration: 0.4, ease: 'power3.in' },
+        '-=0.25'
+      )
+      tl.to(
+        headerRef.current,
+        { pointerEvents: 'none', opacity: 0, duration: 0.1 },
+        '-=0.2'
+      )
+      tl.add(() => {
+        setIgnoreHashChange(true)
+        window.history.replaceState(null, '', window.location.pathname)
+        window.history.pushState({ isFilm: true }, '', '#film')
+        setFilmPlaying(true)
+
+        setTimeout(() => setIgnoreHashChange(false), 100)
+      })
+    }
   }
 
   // Función para formatear la duración de segundos a MM:SS

@@ -19,6 +19,8 @@ const useAppStore = create(
     setClipDuration: (duration) => set({ clipDuration: duration }),
     scrollDelta: 0,
     setScrollDelta: (delta) => set({ scrollDelta: delta }),
+    xrSession: null,
+    setXRSession: (session) => set({ xrSession: session }),
   }))
 )
 
