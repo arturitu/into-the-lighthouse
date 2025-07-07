@@ -109,10 +109,6 @@ export class FilmSeekController {
     if (useAppStore.getState().filmPaused) {
       useAppStore.getState().setFilmPaused(false)
     }
-
-    if (this.targetTime <= 0) {
-      setTimeout(() => useAppStore.getState().setFilmPlaying(false), 500)
-    }
   }
 
   update(delta) {
@@ -139,7 +135,6 @@ export class FilmSeekController {
       Math.min(this.clipDuration, this.currentTime)
     )
     this.targetTime = this.currentTime
-
     if (
       this.currentTime >= this.clipDuration &&
       !useAppStore.getState().filmEnded

@@ -77,6 +77,11 @@ export class CameraController {
             'pointerleave',
             this.pointerLeave
           )
+          setTimeout(() => {
+            this.renderer.xr?.getSession()?.end()
+            useAppStore.getState().setFilmPlaying(false)
+            useAppStore.getState().setFilmEnded(false)
+          }, 2000)
         }
       }
     )
@@ -115,6 +120,7 @@ export class CameraController {
   handleClick = (e) => {
     if (useAppStore.getState().filmEnded) {
       useAppStore.getState().setFilmPlaying(false)
+      useAppStore.getState().setFilmEnded(false)
       return
     }
     if (this.hasMoved || this.hasLeftElement) {
@@ -168,7 +174,7 @@ export class CameraController {
   }
 
   update(camera) {
-    if (this.returning) {
+    if (this.returning && !useAppStore.getState().filmPaused) {
       this.yaw = THREE.MathUtils.lerp(this.yaw, 0, 0.02)
       this.pitch = THREE.MathUtils.lerp(this.pitch, 0, 0.02)
       if (Math.abs(this.yaw) < 0.0001 && Math.abs(this.pitch) < 0.0001) {
