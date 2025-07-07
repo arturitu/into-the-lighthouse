@@ -12,6 +12,8 @@ const Header = ({ progress = 100 }) => {
   const buttonRef = useRef(null)
   const headerRef = useRef(null)
   const setFilmPlaying = useAppStore((state) => state.setFilmPlaying)
+  const setFilmEnded = useAppStore((state) => state.setFilmEnded)
+  const setFilmPaused = useAppStore((state) => state.setFilmPaused)
   const filmPlaying = useAppStore((state) => state.filmPlaying)
   const clipDuration = useAppStore((state) => state.clipDuration)
   const [ignoreHashChange, setIgnoreHashChange] = useState(false)
@@ -134,7 +136,8 @@ const Header = ({ progress = 100 }) => {
       if (ignoreHashChange) return
 
       if (filmPlaying && window.location.hash !== '#film') {
-        setFilmPlaying(false)
+        setFilmEnded(false)
+        setFilmPaused(false)
       }
 
       if (window.location.hash === '#film' && !filmPlaying) {
@@ -151,7 +154,13 @@ const Header = ({ progress = 100 }) => {
       window.removeEventListener('hashchange', handleHashChange)
       window.removeEventListener('popstate', handlePopState)
     }
-  }, [setFilmPlaying, ignoreHashChange, filmPlaying])
+  }, [
+    setFilmPlaying,
+    setFilmEnded,
+    setFilmPaused,
+    ignoreHashChange,
+    filmPlaying,
+  ])
 
   return (
     <header

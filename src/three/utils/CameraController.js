@@ -45,6 +45,10 @@ export class CameraController {
           for (const action of onceActions) {
             action.play()
           }
+          if (this.endTimeout) {
+            clearTimeout(this.endTimeout)
+            this.endTimeout = null
+          }
         } else {
           this.removePointerEvents(this.renderer.domElement)
           const onceActions = this.getOnceActions()
@@ -77,11 +81,11 @@ export class CameraController {
             'pointerleave',
             this.pointerLeave
           )
-          setTimeout(() => {
+          this.endTimeout = setTimeout(() => {
             this.renderer.xr?.getSession()?.end()
             useAppStore.getState().setFilmPlaying(false)
             useAppStore.getState().setFilmEnded(false)
-          }, 2000)
+          }, 5000)
         }
       }
     )
@@ -121,6 +125,7 @@ export class CameraController {
     if (useAppStore.getState().filmEnded) {
       useAppStore.getState().setFilmPlaying(false)
       useAppStore.getState().setFilmEnded(false)
+      useAppStore.getState().setFilmPaused(false)
       return
     }
     if (this.hasMoved || this.hasLeftElement) {
