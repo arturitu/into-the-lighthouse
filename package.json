@@ -1,0 +1,35 @@
+{
+  "name": "into-the-lighthouse",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Exploring 3D web development with Blender and Three.js, combining design and technology.",
+  "license": "MIT",
+  "author": "Arturo Paracuellos <arturo@unboring.net>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arturitu/into-the-lighthouse.git"
+  },
+  "homepage": "https://unboring.net/into-the-lighthouse",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "generate-cert": "openssl req -x509 -newkey rsa:2048 -nodes -keyout key.pem -out certificate.pem -days 365 -subj '/CN=localhost'",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.5",
+    "gsap": "3.13.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "tailwindcss": "^4.1.5",
+    "three": "0.178.0",
+    "zustand": "^5.0.4"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@vitejs/plugin-react": "^4.4.1",
+    "vite": "6.3.5"
+  }
+}

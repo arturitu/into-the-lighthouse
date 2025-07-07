@@ -1,0 +1,37 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Roboto', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+
+  --color-top: #d9d9d9;
+  --color-bottom: #eeeeee;
+  --color-background: #d5dfe3;
+  --color-heading: #161b26;
+  --color-highlight: #0865d5;
+  --color-highlight-dark: #054aad;
+  --color-lighting: #ffffff;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-heading);
+}
+
+html {
+  overflow: hidden;
+  position: relative;
+}
+
+body {
+  overflow: auto;
+  position: relative;
+}
+
+#root {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, var(--color-top), var(--color-bottom));
+}
