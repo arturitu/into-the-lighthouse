@@ -186,6 +186,11 @@ const Header = ({ progress = 100 }) => {
         'max-w-6xl mx-auto px-6 pt-6 pb-10 flex flex-col gap-6 ' +
         (isLoaded ? 'relative z-10' : '')
       }
+      style={{
+        WebkitUserSelect: 'none',
+        userSelect: 'none',
+        WebkitTouchCallout: 'none',
+      }}
     >
       <div className="flex justify-between items-start">
         <a href="https://unboring.net" target="_blank">
