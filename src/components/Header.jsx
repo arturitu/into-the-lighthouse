@@ -19,8 +19,19 @@ const Header = ({ progress = 100 }) => {
   const setXRSession = useAppStore((state) => state.setXRSession)
   const [ignoreHashChange, setIgnoreHashChange] = useState(false)
 
-  const handleButtonClick = () => {
+  const handleButtonClick = async () => {
     buttonRef.current.disabled = true
+    try {
+      let silentAudio = null
+      silentAudio = document.createElement('audio')
+      silentAudio.setAttribute('x-webkit-airplay', 'deny')
+      silentAudio.preload = 'auto'
+      silentAudio.src = '/assets/audios/empty.mp3'
+      await silentAudio.play()
+    } catch (error) {
+      console.warn('Audio fix failed:', error)
+    }
+
     if (useAppStore.getState().isXRSupported) {
       navigator.xr
         ?.requestSession('immersive-vr', {
