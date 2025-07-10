@@ -26,7 +26,8 @@ const Header = ({ progress = 100 }) => {
       silentAudio = document.createElement('audio')
       silentAudio.setAttribute('x-webkit-airplay', 'deny')
       silentAudio.preload = 'auto'
-      silentAudio.src = '/assets/audios/empty.mp3'
+      silentAudio.loop = true
+      silentAudio.src = 'assets/audios/empty.mp3'
       await silentAudio.play()
     } catch (error) {
       console.warn('Audio fix failed:', error)
