@@ -32,19 +32,23 @@ varying vec2 vUv;
 
 void main()  {
 
-	vec2 uv = vUv;
+    vec2 uv = vUv;
 
-	float longitude = uv.x * 2. * M_PI - M_PI + M_PI / 2.;
-	float latitude = uv.y * M_PI;
+    float longitude = uv.x * 2. * M_PI - M_PI + M_PI / 2.;
+    float latitude = uv.y * M_PI;
 
-	vec3 dir = vec3(
-		- sin( longitude ) * sin( latitude ),
-		cos( latitude ),
-		- cos( longitude ) * sin( latitude )
-	);
-	normalize( dir );
+    vec3 dir = vec3(
+        - sin( longitude ) * sin( latitude ),
+        cos( latitude ),
+        - cos( longitude ) * sin( latitude )
+    );
+    normalize( dir );
 
-	gl_FragColor = textureCube( map, dir );
+    vec4 color = textureCube( map, dir );
+
+    color.rgb = pow(color.rgb, vec3(1.0 / 2.2));
+
+    gl_FragColor = color;
 
 }
 `
