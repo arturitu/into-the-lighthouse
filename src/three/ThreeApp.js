@@ -5,6 +5,7 @@ import { VRController } from './utils/VRController'
 import { WindowResizeController } from './utils/WindowResizeController'
 import { SceneLoader } from './utils/SceneLoader'
 import { AnimationController } from './utils/AnimationController'
+import CubemapToEquirectangular from './utils/CubemapToEquirectangular'
 
 export class ThreeApp {
   constructor(container) {
@@ -73,6 +74,8 @@ export class ThreeApp {
 
     this.targetFPS = 60
     this.currentPixelRatio = 1
+
+    this.cubemapToEquirectangular = new CubemapToEquirectangular(this.renderer)
   }
 
   // Based on this post: https://x.com/dangreenheck/status/1937552118837088262
@@ -98,7 +101,8 @@ export class ThreeApp {
     this.adaptivePixelRatio(delta)
     this.cameraController.update(this.camera)
 
-    this.renderer.render(this.scene, this.camera)
+    this.cubemapToEquirectangular.update(this.camera, this.scene)
+    // this.renderer.render(this.scene, this.camera)
     this.animationController.update(delta)
   }
 
