@@ -37,6 +37,9 @@ void main()  {
     float longitude = uv.x * 2. * M_PI - M_PI + M_PI / 2.;
     float latitude = uv.y * M_PI;
 
+    float yaw = M_PI / 2.0;
+    longitude -= yaw;
+
     vec3 dir = vec3(
         - sin( longitude ) * sin( latitude ),
         cos( latitude ),
