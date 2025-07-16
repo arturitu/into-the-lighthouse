@@ -34,20 +34,32 @@ void main()  {
 
     vec2 uv = vUv;
 
-    float longitude = uv.x * 2. * M_PI - M_PI + M_PI / 2.;
-    float latitude = uv.y * M_PI;
+    vec4 color = vec4(0.0);
+    float offset = 1.0 / 4096.0; // Adjust based on resolution
 
-    float yaw = M_PI / 2.0;
-    longitude -= yaw;
+    // Manual sampling with constant offsets
+    vec2 offsets[9];
+    offsets[0] = vec2(-offset, -offset);
+    offsets[1] = vec2(0.0, -offset);
+    offsets[2] = vec2(offset, -offset);
+    offsets[3] = vec2(-offset, 0.0);
+    offsets[4] = vec2(0.0, 0.0);
+    offsets[5] = vec2(offset, 0.0);
+    offsets[6] = vec2(-offset, offset);
+    offsets[7] = vec2(0.0, offset);
+    offsets[8] = vec2(offset, offset);
 
-    vec3 dir = vec3(
-        - sin( longitude ) * sin( latitude ),
-        cos( latitude ),
-        - cos( longitude ) * sin( latitude )
-    );
-    normalize( dir );
-
-    vec4 color = textureCube( map, dir );
+    for (int i = 0; i < 9; i++) {
+        vec2 sampleUV = uv + offsets[i];
+        vec3 dir = vec3(
+            - sin(sampleUV.x * 2. * M_PI - M_PI) * sin(sampleUV.y * M_PI),
+            cos(sampleUV.y * M_PI),
+            - cos(sampleUV.x * 2. * M_PI - M_PI) * sin(sampleUV.y * M_PI)
+        );
+        normalize(dir);
+        color += textureCube(map, dir);
+    }
+    color /= 9.0; // Average the samples
 
     color.rgb = pow(color.rgb, vec3(1.0 / 2.2));
 
