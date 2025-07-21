@@ -28,7 +28,7 @@ const Header = ({ progress = 100 }) => {
       silentAudio.preload = 'auto'
       silentAudio.loop = true
       silentAudio.src = 'assets/audios/empty.mp3'
-      await silentAudio.play()
+      silentAudio.play()
     } catch (error) {
       console.warn('Audio fix failed:', error)
     }
